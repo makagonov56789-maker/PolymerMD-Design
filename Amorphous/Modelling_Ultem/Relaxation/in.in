@@ -1,0 +1,179 @@
+units real
+atom_style full
+boundary p p p
+
+variable    dt equal 1
+variable    thermdt equal ${dt}*100
+variable    barodt equal ${dt}*1000
+variable numstepsstart equal 50000/${dt}
+variable numstepsmedium equal 100000/${dt}
+variable numstepssmall equal 10000/${dt}
+variable numstepssupersmall equal 5000/${dt}
+variable numstepsfin equal 800000/${dt}
+
+
+pair_style      lj/cut/coul/long 10
+bond_style      harmonic
+angle_style     harmonic
+dihedral_style  fourier
+improper_style  cvff 
+special_bonds   amber  
+pair_modify     tail yes mix arithmetic
+kspace_style    pppm 1.0e-4
+
+read_data ultem.data
+
+shell mkdir checkpoints
+
+dump           2 all custom 50000 ./checkpoints/smth.*.pos id type x y z 
+
+thermo_style custom step temp press density evdwl ecoul ebond eangle edihed eimp vol pe ke pxx pyy pzz pxy pxz pyz enthalpy fmax
+thermo_modify flush yes
+thermo 1000
+
+neigh_modify one 1000000 page 100000000
+
+minimize 1.0e-10 1.0e-10 80000 80000
+velocity all create 600.0 111111 mom yes rot yes dist gaussian
+timestep ${dt}
+neigh_modify delay 0 every 1 check yes # Uncomment if the simulation is unstable
+
+
+fix mdprep1 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepsstart}
+write_data ./checkpoints/mdprep1.data
+unfix mdprep1
+
+fix mdprep2 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepsstart}
+write_data ./checkpoints/mdprep2.data
+unfix mdprep2
+
+fix def all deform 1 x scale 0.69336 y scale 0.69336 z scale 0.69336
+fix mdprep3 all nvt temp 300.000000 300.000000 ${thermdt}
+run 100000
+write_data ./checkpoints/mdprep3.data
+unfix def
+unfix mdprep3
+
+
+fix md1 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepsstart}
+write_data ./checkpoints/md1.data
+unfix md1
+
+fix md2 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepsstart}
+write_data ./checkpoints/md2.data
+unfix md2
+
+timestep 0.1
+fix md3 all npt temp 300.000000 300.000000 ${thermdt} iso 1000.000000 1000.000000 ${barodt} nreset 1000 
+run ${numstepsstart}
+write_data ./checkpoints/md3.data
+unfix md3
+timestep ${dt}
+
+fix md4 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepsstart}
+write_data ./checkpoints/md4.data
+unfix md4
+
+fix md5 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepsmedium}
+write_data ./checkpoints/md5.data
+unfix md5
+
+timestep 0.1
+fix md6 all npt temp 300.000000 300.000000 ${thermdt} iso 30000.000000 30000.000000 ${barodt} nreset 1000 
+run ${numstepsstart}
+write_data ./checkpoints/md6.data
+unfix md6
+timestep ${dt}
+
+fix md7 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepsstart}
+write_data ./checkpoints/md7.data
+unfix md7
+
+fix md8 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepsmedium}
+write_data ./checkpoints/md8.data
+unfix md8
+
+timestep 0.1
+fix md9 all npt temp 300.000000 300.000000 ${thermdt} iso 50000.000000 50000.000000 ${barodt} nreset 1000 
+run ${numstepsstart}
+write_data ./checkpoints/md9.data
+unfix md9
+timestep ${dt}
+
+fix md10 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepsstart}
+write_data ./checkpoints/md10.data
+unfix md10
+
+fix md11 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepsmedium}
+write_data ./checkpoints/md11.data
+unfix md11
+
+timestep 0.1
+fix md12 all npt temp 300.000000 300.000000 ${thermdt} iso 25000.000000 25000.000000 ${barodt} nreset 1000 
+run ${numstepssupersmall}
+write_data ./checkpoints/md12.data
+unfix md12
+timestep ${dt}
+
+fix md13 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepssupersmall}
+write_data ./checkpoints/md13.data
+unfix md13
+
+fix md14 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepssmall}
+write_data ./checkpoints/md14.data
+unfix md14
+
+timestep 0.1
+fix md15 all npt temp 300.000000 300.000000 ${thermdt} iso 5000.000000 5000.000000 ${barodt} nreset 1000 
+run ${numstepssupersmall}
+write_data ./checkpoints/md15.data
+unfix md15
+timestep ${dt}
+
+fix md16 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepssupersmall}
+write_data ./checkpoints/md16.data
+unfix md16
+
+fix md17 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepssmall}
+write_data ./checkpoints/md17.data
+unfix md17
+
+timestep 0.1
+fix md18 all npt temp 300.000000 300.000000 ${thermdt} iso 500.000000 500.000000 ${barodt} nreset 1000 
+run ${numstepssupersmall}
+write_data ./checkpoints/md18.data
+unfix md18
+timestep ${dt}
+
+fix md19 all nvt temp 600.000000 600.000000 ${thermdt}
+run ${numstepssupersmall}
+write_data ./checkpoints/md19.data
+unfix md19
+
+fix md20 all nvt temp 300.000000 300.000000 ${thermdt}
+run ${numstepssmall}
+write_data ./checkpoints/md20.data
+unfix md20
+
+fix md21 all npt temp 300.000000 300.000000 ${thermdt} iso 1.000000 1.000000 ${barodt} nreset 1000 
+run ${numstepsfin}
+write_data ./checkpoints/md21.data
+unfix md21
+
+fix relax all npt temp 300 300 100 iso 1 1 1000  
+run 10000000
+write_data relaxed_ultem_10ns.data
