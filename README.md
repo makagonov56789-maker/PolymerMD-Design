@@ -39,7 +39,7 @@ _**The calculated properties include:**_
 - glass-transition temperature (Tg);
 - Young's modulus;
 - Poisson's ratio;
-- shear-related mechanical response;
+- shear modulus;
 - thermal conductivity;
 - temperature-dependent volumetric behaviour.
 
