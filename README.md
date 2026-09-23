@@ -46,15 +46,15 @@ _**The calculated properties include:**_
 The **_central_** idea is to connect **_molecular structure_** with **_macroscopic polymer properties_** through a reproducible computational workflow:
 
 **_Molecular structure
-       ↓
+       →
 Polymer model generation
-       ↓
+       →
 Force-field assignment
-       ↓
+       →
 Molecular dynamics
-       ↓
+       →
 Automated property extraction
-       ↓
+       →
 Property dataset_**
 
 The **_current_** version of the project focuses on _atomistic_ modelling, _molecular-dynamics_ simulations, and _automated extraction_ of polymer properties.
