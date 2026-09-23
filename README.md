@@ -62,15 +62,15 @@ The **_current_** version of the project focuses on _atomistic_ modelling, _mole
 The long-term objective is to extend this workflow with _machine-learning_ models capable of learning _structure–property_ relationships and, ultimately, to develop an _inverse-design_ pipeline:
 
 **_Property dataset
-       ↓
+       →
 Machine-learning model
-       ↓
+       →
 Target properties
-       ↓
+       →
 Candidate polymer structures
-       ↓
+       →
 MD validation
-       ↓
+       →
 Updated property dataset_**
 
 This would enable computational screening of polymer structures according to target combinations of properties rather than relying exclusively on trial-and-error experimental development.
